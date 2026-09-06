@@ -10,9 +10,9 @@ var assert_1 = tslib_1.__importDefault(require("assert"));
 var _ = require('lodash');
 var Resource = /** @class */ (function () {
     function Resource(attributes, options) {
-        var _this = this;
         if (attributes === void 0) { attributes = {}; }
         if (options === void 0) { options = {}; }
+        var _this = this;
         this._attributes = {};
         this.attributes = {};
         this.managers = {};
@@ -81,18 +81,18 @@ var Resource = /** @class */ (function () {
                 },
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Resource, "uuid", {
         get: function () {
             if (!this._uuid) {
-                this._uuid = util_1.uuidWeak();
+                this._uuid = (0, util_1.uuidWeak)();
                 return this._uuid;
             }
             return this._uuid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -103,7 +103,7 @@ var Resource = /** @class */ (function () {
     Resource.cacheResource = function (resource, replace) {
         if (replace === void 0) { replace = false; }
         if (!resource.id) {
-            throw new exceptions.CacheError("Can't cache " + resource.toResourceName() + " resource without " + resource.getConstructor().uniqueKey + " field");
+            throw new exceptions.CacheError("Can't cache ".concat(resource.toResourceName(), " resource without ").concat(resource.getConstructor().uniqueKey, " field"));
         }
         else if (replace) {
             try {
@@ -168,7 +168,7 @@ var Resource = /** @class */ (function () {
         set: function (value) {
             this.validation = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -177,8 +177,8 @@ var Resource = /** @class */ (function () {
      */
     Resource.getListRoutePath = function (query) {
         if (query && Object.keys(query).length) {
-            var qs = util_1.urlStringify(query);
-            return this.endpoint + "?" + qs;
+            var qs = (0, util_1.urlStringify)(query);
+            return "".concat(this.endpoint, "?").concat(qs);
         }
         return this.endpoint;
     };
@@ -188,8 +188,8 @@ var Resource = /** @class */ (function () {
      * @param query Querystring
      */
     Resource.getDetailRoutePath = function (id, query) {
-        var qs = util_1.urlStringify(query);
-        return this.endpoint + "/" + String(id) + (query && Object.keys(query).length ? '?' : '') + qs;
+        var qs = (0, util_1.urlStringify)(query);
+        return "".concat(this.endpoint, "/").concat(String(id)).concat(query && Object.keys(query).length ? '?' : '').concat(qs);
     };
     /**
      * HTTP Get of resource's list route--returns a promise
@@ -281,11 +281,11 @@ var Resource = /** @class */ (function () {
         });
     };
     Resource.wrap = function (relativePath, query) {
-        assert_1.default(relativePath && relativePath[0] === '/', "Relative path \"" + relativePath + "\" must start with a \"/\"");
+        (0, assert_1.default)(relativePath && relativePath[0] === '/', "Relative path \"".concat(relativePath, "\" must start with a \"/\""));
         var relEndpoint = this.endpoint + relativePath;
         if (query && Object.keys(query).length) {
-            var qs = util_1.urlStringify(query);
-            relEndpoint = relEndpoint + "?" + qs;
+            var qs = (0, util_1.urlStringify)(query);
+            relEndpoint = "".concat(relEndpoint, "?").concat(qs);
         }
         return this.client.bindMethodsToPath(relEndpoint);
     };
@@ -294,7 +294,7 @@ var Resource = /** @class */ (function () {
         // function class_1() { } when transpiling, so to help out with this in
         // debugging, replace the class_1 function name with something more descriptive
         if (this.name.match(/^class_/)) {
-            return "ResourceClass(" + this.endpoint + ")";
+            return "ResourceClass(".concat(this.endpoint, ")");
         }
         return this.name;
     };
@@ -316,8 +316,8 @@ var Resource = /** @class */ (function () {
      * @param resourceId
      */
     Resource.getResourceHashKey = function (resourceId) {
-        assert_1.default(Boolean(resourceId), "Can't generate resource hash key with an empty Resource ID. Please ensure Resource is saved first.");
-        return buffer_1.Buffer.from(this.uuid + ":" + String(resourceId)).toString('base64');
+        (0, assert_1.default)(Boolean(resourceId), "Can't generate resource hash key with an empty Resource ID. Please ensure Resource is saved first.");
+        return buffer_1.Buffer.from("".concat(this.uuid, ":").concat(String(resourceId))).toString('base64');
     };
     Resource.getRelatedClasses = function () {
         if ('function' === typeof this.related) {
@@ -368,7 +368,7 @@ var Resource = /** @class */ (function () {
             if (pieces_1.length > 0) {
                 // We need to go deeper...
                 if (!manager) {
-                    throw new exceptions.ImproperlyConfiguredError("No relation found on " + this.toResourceName() + "[" + thisKey + "]. Did you define it on " + this.toResourceName() + ".related?");
+                    throw new exceptions.ImproperlyConfiguredError("No relation found on ".concat(this.toResourceName(), "[").concat(thisKey, "]. Did you define it on ").concat(this.toResourceName(), ".related?"));
                 }
                 if (!manager.hasValues()) {
                     return undefined;
@@ -563,7 +563,7 @@ var Resource = /** @class */ (function () {
                 to = relatedLiteral.to;
                 nested = !!relatedLiteral.nested;
             }
-            assert_1.default('function' === typeof to, "Couldn't find RelatedResource class with key \"" + relatedKey + "\". Does it exist?");
+            (0, assert_1.default)('function' === typeof to, "Couldn't find RelatedResource class with key \"".concat(relatedKey, "\". Does it exist?"));
             var RelatedManagerCtor = to.RelatedManagerClass;
             var relatedManager = new RelatedManagerCtor(to, this._attributes[relatedKey]);
             if (nested && relatedManager.canAutoResolve()) {
@@ -573,7 +573,7 @@ var Resource = /** @class */ (function () {
         }
         catch (e) {
             if (e instanceof assert_1.default.AssertionError) {
-                e.message = e.message + " -- Relation: " + this.toResourceName() + ".related[" + relatedKey + "]";
+                e.message = "".concat(e.message, " -- Relation: ").concat(this.toResourceName(), ".related[").concat(relatedKey, "]");
             }
             throw e;
         }
@@ -671,8 +671,8 @@ var Resource = /** @class */ (function () {
         return this.getConstructor().getCached(this.id);
     };
     Resource.prototype.wrap = function (relativePath, query) {
-        assert_1.default(relativePath && relativePath[0] === '/', "Relative path \"" + relativePath + "\" must start with a \"/\"");
-        assert_1.default(this.id, "Can't look up a relative route on a resource that has not been created yet.");
+        (0, assert_1.default)(relativePath && relativePath[0] === '/', "Relative path \"".concat(relativePath, "\" must start with a \"/\""));
+        (0, assert_1.default)(this.id, "Can't look up a relative route on a resource that has not been created yet.");
         var Ctor = this.getConstructor();
         var thisPath = '/' + this.id + relativePath;
         return Ctor.wrap(thisPath, query);
@@ -688,11 +688,11 @@ var Resource = /** @class */ (function () {
         set: function (value) {
             throw new exceptions.AttributeError('Cannot set ID manually. Set ID by using attributes[id] = value');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Resource.prototype.toString = function () {
-        return this.toResourceName() + " " + (this.id || '(New)');
+        return "".concat(this.toResourceName(), " ").concat(this.id || '(New)');
     };
     Resource.prototype.toResourceName = function () {
         return this.getConstructor().toResourceName();

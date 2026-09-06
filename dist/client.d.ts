@@ -15,12 +15,13 @@ export interface ResourceResponse<T extends Resource, U extends any = any> exten
     next?: () => Promise<ResourceResponse<T, U>>;
     previous?: () => Promise<ResourceResponse<T, U>>;
 }
-export declare type ExtractorFunction<T extends Resource, U extends any = any> = (result: ResourceResponse<T, U>['response']) => ResourceResponse<T, U>;
+export type ExtractorFunction<T extends Resource, U extends any = any> = (result: ResourceResponse<T, U>['response']) => ResourceResponse<T, U>;
 export declare class BaseClient {
     axios: AxiosInstance;
     config: AxiosRequestConfig;
     constructor(baseURL: string, config?: AxiosRequestConfig);
-    hostname: string;
+    get hostname(): string;
+    set hostname(value: string);
     static extend<T, U>(this: U, classProps: T): U & T;
     negotiateContent<T extends typeof Resource>(ResourceClass: T): ExtractorFunction<InstanceType<T>>;
     /**
@@ -43,13 +44,13 @@ export declare class BaseClient {
     head<T = any>(path: string, options?: AxiosRequestConfig): AxiosPromise<T>;
     options<T = any>(path: string, options?: AxiosRequestConfig): AxiosPromise<T>;
     bindMethodsToPath(relativePath: string): {
-        get: (options?: AxiosRequestConfig) => AxiosPromise<{}>;
-        post: (body?: any, options?: AxiosRequestConfig) => AxiosPromise<{}>;
-        put: (body?: any, options?: AxiosRequestConfig) => AxiosPromise<{}>;
-        patch: (body?: any, options?: AxiosRequestConfig) => AxiosPromise<{}>;
-        head: (options?: AxiosRequestConfig) => AxiosPromise<{}>;
-        options: (options?: AxiosRequestConfig) => AxiosPromise<{}>;
-        delete: (options?: AxiosRequestConfig) => AxiosPromise<{}>;
+        get: (options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
+        post: (body?: any, options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
+        put: (body?: any, options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
+        patch: (body?: any, options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
+        head: (options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
+        options: (options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
+        delete: (options?: AxiosRequestConfig<any, any>) => AxiosPromise<unknown>;
     };
     onError(exception: Error | AxiosError): any;
 }

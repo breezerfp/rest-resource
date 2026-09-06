@@ -536,7 +536,7 @@ export default class Resource {
             const promise = manager.resolve().then((objects) => {
                 if (deep) {
                     let otherPromises = objects.map((resource) => resource.resolveRelated({ deep, managers }))
-                    return Promise.all(otherPromises).then(() => {
+                    return Promise.all(otherPromises).then((): void => {
                         return void {}
                     })
                 } else {
@@ -547,7 +547,7 @@ export default class Resource {
             promises.push(promise)
         }
 
-        return Promise.all(promises).then(() => void {})
+        return Promise.all(promises).then((): void => void {})
     }
 
     /**

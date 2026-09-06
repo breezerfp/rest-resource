@@ -32,11 +32,13 @@
             "dom",
             "dom.iterable",
             "scripthost"
-        ]
+        ],
+        "skipLibCheck": true
     },
     "include": [
         "src/**/*.ts",
-        "src/**/*.tsx", "tests/normalization.spec.ts"
+        "src/**/*.tsx",
+        "tests/normalization.spec.ts"
     ],
     "exclude": [
         "node_modules"

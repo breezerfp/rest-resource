@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CurrencyNormalizer = exports.BooleanNormalizer = exports.NumberNormalizer = exports.StringNormalizer = exports.BaseNormalizer = void 0;
+exports.normalizerFactory = normalizerFactory;
 var tslib_1 = require("tslib");
 var index_1 = tslib_1.__importDefault(require("../index"));
 function normalizerFactory(name, options) {
@@ -9,17 +11,16 @@ function normalizerFactory(name, options) {
     }
     catch (e) {
         if (e instanceof TypeError) {
-            throw new Error(name + " is not a valid normalizer instance. Please see " + __filename + " for valid choices");
+            throw new Error("".concat(name, " is not a valid normalizer instance. Please see ").concat(__filename, " for valid choices"));
         }
         else {
             throw e;
         }
     }
 }
-exports.normalizerFactory = normalizerFactory;
 var BaseNormalizer = /** @class */ (function () {
     function BaseNormalizer(_a) {
-        var _b = (_a === void 0 ? {} : _a).uniqueKey, uniqueKey = _b === void 0 ? 'id' : _b;
+        var _b = _a === void 0 ? {} : _a, _c = _b.uniqueKey, uniqueKey = _c === void 0 ? 'id' : _c;
         this.normalizeTo = String;
         this.uniqueKey = 'id';
         this.nullable = true;

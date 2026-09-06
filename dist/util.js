@@ -1,5 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.camelize = camelize;
+exports.uuidWeak = uuidWeak;
+exports.getContentTypeWeak = getContentTypeWeak;
+exports.urlStringify = urlStringify;
 var tslib_1 = require("tslib");
 var index_1 = tslib_1.__importDefault(require("./index"));
 var lodash_1 = require("lodash");
@@ -15,7 +19,6 @@ function camelize(str) {
         return index == 0 ? match.toLowerCase() : match.toUpperCase();
     });
 }
-exports.camelize = camelize;
 /**
  * This is a very quick and primitive implementation of RFC 4122 UUID
  * Creates a basic variant UUID
@@ -28,9 +31,8 @@ function uuidWeak() {
         return value.toString(16);
     });
 }
-exports.uuidWeak = uuidWeak;
 function getContentTypeWeak(value) {
-    var node = lodash_1.first([].concat(value));
+    var node = (0, lodash_1.first)([].concat(value));
     var Ctor = node.constructor;
     if (Ctor.prototype instanceof index_1.default) {
         return index_1.default;
@@ -39,9 +41,7 @@ function getContentTypeWeak(value) {
         return Ctor;
     }
 }
-exports.getContentTypeWeak = getContentTypeWeak;
 function urlStringify(object) {
     return (new url_shim_1.URLSearchParams(object)).toString();
 }
-exports.urlStringify = urlStringify;
 //# sourceMappingURL=util.js.map

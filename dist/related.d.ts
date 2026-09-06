@@ -1,6 +1,6 @@
 import Resource, { DetailOpts } from './index';
-export declare type RelatedObjectValue = string | string[] | number | number[] | Record<string, any> | Record<string, any>[];
-export declare type CollectionValue = Record<string, any>[];
+export type RelatedObjectValue = string | string[] | number | number[] | Record<string, any> | Record<string, any>[];
+export type CollectionValue = Record<string, any>[];
 export default class RelatedManager<T extends typeof Resource = typeof Resource> {
     to: T;
     value: RelatedObjectValue;
@@ -97,12 +97,12 @@ export default class RelatedManager<T extends typeof Resource = typeof Resource>
      * Getter -- get `this._resources` but make sure we've actually retrieved the objects first
      * Throws AttributeError if `this.resolve()` hasn't finished
      */
-    readonly resources: InstanceType<T>[];
+    get resources(): InstanceType<T>[];
     /**
      * Getter -- Same as manager.resources except returns first node
      */
-    readonly resource: InstanceType<T>;
-    readonly length: number;
+    get resource(): InstanceType<T>;
+    get length(): number;
     toString(): string;
     toJSON(): any;
 }

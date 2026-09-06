@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JWTBearerClient = exports.DefaultClient = exports.BaseClient = void 0;
 var tslib_1 = require("tslib");
 var axios_1 = tslib_1.__importDefault(require("axios"));
 tslib_1.__exportStar(require("axios"), exports);
@@ -18,7 +19,7 @@ var BaseClient = /** @class */ (function () {
             this.config.baseURL = value;
             this.axios = axios_1.default.create(this.config);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     BaseClient.extend = function (classProps) {
@@ -143,7 +144,7 @@ var JWTBearerClient = /** @class */ (function (_super) {
         if (options === void 0) { options = {}; }
         var _this = this;
         var headers = Object.assign({
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer ".concat(token),
         }, options.headers);
         options.headers = headers;
         _this = _super.call(this, baseURL, options) || this;
