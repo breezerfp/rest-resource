@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ValidationError = exports.AttributeError = exports.CacheError = exports.ImproperlyConfiguredError = exports.BaseError = void 0;
 var tslib_1 = require("tslib");
 var BaseError = /** @class */ (function (_super) {
     tslib_1.__extends(BaseError, _super);
@@ -49,11 +50,11 @@ var ValidationError = /** @class */ (function (_super) {
             _this.message = fieldOrArray.join('\n');
         }
         else if (!_this.message && fieldOrArray) {
-            _this.message = fieldOrArray + ": This field is not valid";
+            _this.message = "".concat(fieldOrArray, ": This field is not valid");
             _this.field = fieldOrArray;
         }
         else if (_this.message && 'string' === typeof fieldOrArray) {
-            _this.message = fieldOrArray + ": " + _this.message;
+            _this.message = "".concat(fieldOrArray, ": ").concat(_this.message);
             _this.field = fieldOrArray;
         }
         return _this;

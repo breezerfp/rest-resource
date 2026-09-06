@@ -25,8 +25,8 @@ export default class Resource {
     /**
      * Cache getter
      */
-    static readonly cache: any;
-    static readonly uuid: string;
+    static get cache(): any;
+    static get uuid(): string;
     /**
      * Cache a resource onto this class' cache for cacheMaxAge seconds
      * @param resource
@@ -53,11 +53,12 @@ export default class Resource {
      * Backwards compatibility
      * Remove in next major release @todo
      */
+    static get validators(): any;
     /**
-    * Backwards compatibility
-    * Remove in next major release @todo
-    */
-    static validators: any;
+     * Backwards compatibility
+     * Remove in next major release @todo
+     */
+    static set validators(value: any);
     /**
      * Get list route path (eg. /users) to be used with HTTP requests and allow a querystring object
      * @param query Querystring
@@ -77,17 +78,13 @@ export default class Resource {
     static list<T extends typeof Resource>(this: T, options?: ListOpts): ListResponse<T>;
     static detail<T extends typeof Resource>(this: T, id: string | number, options?: DetailOpts): Promise<InstanceType<T>>;
     static wrap(relativePath: string, query?: any): {
-        get: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        post: (body?: any, options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        put: (body?: any, options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        patch: (body?: any, options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        head: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        options: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        /**
-         * Get a cached resource by ID
-         * @param id
-         */
-        delete: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
+        get: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        post: (body?: any, options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        put: (body?: any, options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        patch: (body?: any, options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        head: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        options: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        delete: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
     };
     static toResourceName(): string;
     static makeDefaultsObject(): any;
@@ -173,34 +170,31 @@ export default class Resource {
     cache<T extends Resource>(this: T, replace?: boolean): T;
     getCached<T extends Resource>(this: T): CachedResource<T>;
     wrap(relativePath: string, query?: any): {
-        get: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        post: (body?: any, options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        put: (body?: any, options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        patch: (body?: any, options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        head: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        options: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
-        /**
-         * Get a cached resource by ID
-         * @param id
-         */
-        delete: (options?: import("axios").AxiosRequestConfig) => import("axios").AxiosPromise<{}>;
+        get: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        post: (body?: any, options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        put: (body?: any, options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        patch: (body?: any, options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        head: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        options: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
+        delete: (options?: import("axios").AxiosRequestConfig<any, any>) => import("axios").AxiosPromise<unknown>;
     };
     isNew(): boolean;
-    id: string;
+    get id(): string;
+    set id(value: string);
     toString(): string;
     toResourceName(): string;
     toJSON(): any;
 }
-export declare type TypeOrFunctionReturningType<T> = (() => T) | T;
-export declare type RelatedDict = Record<string, typeof Resource | RelatedLiteral>;
-export declare type RelatedDictOrFunction = TypeOrFunctionReturningType<RelatedDict>;
+export type TypeOrFunctionReturningType<T> = (() => T) | T;
+export type RelatedDict = Record<string, typeof Resource | RelatedLiteral>;
+export type RelatedDictOrFunction = TypeOrFunctionReturningType<RelatedDict>;
 export interface RelatedLiteral {
     to: typeof Resource;
     nested?: boolean;
 }
-export declare type ValidatorFunc = (value?: any, resource?: Resource, validationExceptionClass?: typeof exceptions.ValidationError) => void;
-export declare type ValidatorDict = Record<string, ValidatorFunc | ValidatorFunc[]>;
-export declare type ValidatorDictOrFunction = TypeOrFunctionReturningType<ValidatorDict>;
+export type ValidatorFunc = (value?: any, resource?: Resource, validationExceptionClass?: typeof exceptions.ValidationError) => void;
+export type ValidatorDict = Record<string, ValidatorFunc | ValidatorFunc[]>;
+export type ValidatorDictOrFunction = TypeOrFunctionReturningType<ValidatorDict>;
 export interface CachedResource<T extends Resource> {
     expires: number;
     resource: T;
@@ -215,12 +209,12 @@ export interface ResolveRelatedOpts {
     managers?: string[];
     deep?: boolean;
 }
-export declare type ListOpts = RequestConfig & {
+export type ListOpts = RequestConfig & {
     resolveRelated?: boolean;
     resolveRelatedDeep?: boolean;
 };
-export declare type ListResponse<T extends typeof Resource> = Promise<ResourceResponse<InstanceType<T>, any>>;
-export declare type DetailOpts = RequestConfig & {
+export type ListResponse<T extends typeof Resource> = Promise<ResourceResponse<InstanceType<T>, any>>;
+export type DetailOpts = RequestConfig & {
     resolveRelated?: boolean;
     resolveRelatedDeep?: boolean;
 };

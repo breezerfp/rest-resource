@@ -23,6 +23,6 @@ export declare class CurrencyNormalizer extends NumberNormalizer {
 export interface BaseNormalizerOptions {
     uniqueKey?: string;
 }
-export declare type NormalizerFunc = (value: any) => any;
-export declare type ValidNormalizer = BaseNormalizer | NormalizerFunc;
-export declare type NormalizerDict = Record<string, ValidNormalizer>;
+export type NormalizerFunc = (value: any) => any;
+export type ValidNormalizer = BaseNormalizer | NormalizerFunc;
+export type NormalizerDict = Record<string, ValidNormalizer>;

@@ -22,7 +22,7 @@ var RelatedManager = /** @class */ (function () {
          */
         this.batchSize = Infinity;
         this._resources = {};
-        assert_1.default(typeof to === 'function', "RelatedManager expected first parameter to be Resource class, received \"" + to + "\". Please double check related definitions on class.");
+        (0, assert_1.default)(typeof to === 'function', "RelatedManager expected first parameter to be Resource class, received \"".concat(to, "\". Please double check related definitions on class."));
         this.to = to;
         this.value = value;
         this.many = Array.isArray(value);
@@ -58,7 +58,7 @@ var RelatedManager = /** @class */ (function () {
      * @returns Function
      */
     RelatedManager.prototype.getValueContentType = function () {
-        return util_1.getContentTypeWeak(this.value);
+        return (0, util_1.getContentTypeWeak)(this.value);
     };
     /**
      * Get the current value and the content type and turn it into a list of primary keys
@@ -115,7 +115,7 @@ var RelatedManager = /** @class */ (function () {
     RelatedManager.prototype.getOne = function (id, options) {
         var _this = this;
         return this.to.detail(id, options).then(function (resource) {
-            assert_1.default(resource.getConstructor().toResourceName() == _this.to.toResourceName(), "Related class detail() returned invalid instance: " + resource.toResourceName() + " (returned) !== " + _this.to.toResourceName() + " (expected)");
+            (0, assert_1.default)(resource.getConstructor().toResourceName() == _this.to.toResourceName(), "Related class detail() returned invalid instance: ".concat(resource.toResourceName(), " (returned) !== ").concat(_this.to.toResourceName(), " (expected)"));
             _this._resources[resource.id] = resource;
             return resource;
         });
@@ -236,18 +236,18 @@ var RelatedManager = /** @class */ (function () {
         var value = this.value;
         var contentType = this.getValueContentType();
         var newResources = {};
-        assert_1.default(Object === contentType, "Expected RelatedResource.value to be an Object. Received " + contentType);
+        (0, assert_1.default)(Object === contentType, "Expected RelatedResource.value to be an Object. Received ".concat(contentType));
         try {
             if (this.many) {
                 for (var i in value) {
                     var resource = new Ctor(value[i]);
-                    assert_1.default(!!resource.id, "RelatedResource.value[" + i + "] does not have an ID.");
+                    (0, assert_1.default)(!!resource.id, "RelatedResource.value[".concat(i, "] does not have an ID."));
                     newResources[resource.id] = resource;
                 }
             }
             else {
                 var resource = new Ctor(value);
-                assert_1.default(!!resource.id, "RelatedResource value does not have an ID.");
+                (0, assert_1.default)(!!resource.id, "RelatedResource value does not have an ID.");
                 newResources[this.getIdFromObject(value)] = new Ctor(value);
             }
             this.resolved = true;
@@ -263,9 +263,9 @@ var RelatedManager = /** @class */ (function () {
      * @param resource Resource instance
      */
     RelatedManager.prototype.add = function (resource) {
-        assert_1.default(this.many, "Related Manager \"many\" must be true to add()");
-        assert_1.default(resource.id, "Resource must be saved before adding to Related Manager");
-        assert_1.default(resource.getConstructor() === this.to, "Related Manager add() expected " + this.to.toResourceName() + ", received " + resource.getConstructor().toResourceName());
+        (0, assert_1.default)(this.many, "Related Manager \"many\" must be true to add()");
+        (0, assert_1.default)(resource.id, "Resource must be saved before adding to Related Manager");
+        (0, assert_1.default)(resource.getConstructor() === this.to, "Related Manager add() expected ".concat(this.to.toResourceName(), ", received ").concat(resource.getConstructor().toResourceName()));
         var ContentCtor = this.getValueContentType();
         var value;
         if (ContentCtor === Object) {
@@ -293,12 +293,12 @@ var RelatedManager = /** @class */ (function () {
          */
         get: function () {
             if (!this.resolved) {
-                throw new exceptions_1.AttributeError("Can't read results of " + this.constructor.name + "[resources], " + this.to.toResourceName() + " must resolve() first");
+                throw new exceptions_1.AttributeError("Can't read results of ".concat(this.constructor.name, "[resources], ").concat(this.to.toResourceName(), " must resolve() first"));
             }
             var allObjects = Object.values(this._resources);
             return allObjects;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RelatedManager.prototype, "resource", {
@@ -308,14 +308,14 @@ var RelatedManager = /** @class */ (function () {
         get: function () {
             return this.resources[0];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RelatedManager.prototype, "length", {
         get: function () {
             return this.primaryKeys.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     RelatedManager.prototype.toString = function () {
